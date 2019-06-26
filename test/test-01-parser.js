@@ -1,190 +1,190 @@
-'use strict'
+"use strict";
 
-const demand = require('must')
-const fs = require('fs')
-const parser = require('../lib/parser')
-const path = require('path')
+const demand = require("must");
+const fs = require("fs");
+const parser = require("../lib/parser");
+const path = require("path");
 
 // ----------------------------------------------------------------------
 
-let testdir = __dirname
+let testdir = __dirname;
 
-if (path.basename(testdir) !== 'test') {
-  testdir = path.join(testdir, 'test')
+if (path.basename(testdir) !== "test") {
+  testdir = path.join(testdir, "test");
 }
 
 function readFixture(fixture) {
-  const fpath = path.join(testdir, 'fixtures', fixture)
-  const data = fs.readFileSync(fpath, 'utf8')
-  return data
+  const fpath = path.join(testdir, "fixtures", fixture);
+  const data = fs.readFileSync(fpath, "utf8");
+  return data;
 }
 
 // ----------------------------------------------------------------------
 
-let rparser
+let rparser;
 
 before(() => {
-  rparser = parser.createParser()
-})
+  rparser = parser.createParser();
+});
 
-describe('recurly xml parser', () => {
-  const data = readFixture('types.xml')
-  let typesResult
+describe("recurly xml parser", () => {
+  const data = readFixture("types.xml");
+  let typesResult;
 
-  it('can parse basic data types', done => {
+  it("can parse basic data types", done => {
     rparser.parseXML(data, (err, result) => {
-      demand(err).not.exist()
-      typesResult = result
-      done()
-    })
-  })
+      demand(err).not.exist();
+      typesResult = result;
+      done();
+    });
+  });
 
-  it('can parse subarrays', () => {
-    typesResult.must.be.an.array()
-    typesResult.length.must.equal(2)
-  })
+  it("can parse subarrays", () => {
+    typesResult.must.be.an.array();
+    typesResult.length.must.equal(2);
+  });
 
-  it('can parse single-item subarrays', done => {
-    const blortdata = readFixture('single-item.xml')
+  it("can parse single-item subarrays", done => {
+    const blortdata = readFixture("single-item.xml");
     rparser.parseXML(blortdata, (err, result) => {
-      demand(err).not.exist()
-      result.must.be.an.array()
-      result.length.must.equal(1)
-      result[0].must.be.an.object()
-      result[0].must.have.property('name')
-      result[0].name.must.equal('The Only Blort')
-      done()
-    })
-  })
+      demand(err).not.exist();
+      result.must.be.an.array();
+      result.length.must.equal(1);
+      result[0].must.be.an.object();
+      result[0].must.have.property("name");
+      result[0].name.must.equal("The Only Blort");
+      done();
+    });
+  });
 
-  it('can parse boolean types', () => {
-    const item = typesResult[0]
-    item.boolean_true.must.be.a.boolean()
-    item.boolean_true.must.equal(true)
-    item.boolean_false.must.be.a.boolean()
-    item.boolean_false.must.equal(false)
-  })
+  it("can parse boolean types", () => {
+    const item = typesResult[0];
+    item.boolean_true.must.be.a.boolean();
+    item.boolean_true.must.equal(true);
+    item.boolean_false.must.be.a.boolean();
+    item.boolean_false.must.equal(false);
+  });
 
-  it('can parse integer types', () => {
-    const item = typesResult[1]
-    item.integer_value.must.be.a.number()
-    item.integer_value.must.equal(3)
-  })
+  it("can parse integer types", () => {
+    const item = typesResult[1];
+    item.integer_value.must.be.a.number();
+    item.integer_value.must.equal(3);
+  });
 
-  it('can parse nil types', () => {
-    const item = typesResult[0]
-    item.must.have.property('nil_value')
-    item.nil_value.must.equal('')
-  })
+  it("can parse nil types", () => {
+    const item = typesResult[0];
+    item.must.have.property("nil_value");
+    item.nil_value.must.equal("");
+  });
 
-  it('can parse datetype types', () => {
-    const item = typesResult[0]
-    item.datetime_value.must.be.a.date()
-    const comparisonDate = new Date('Tue Apr 19 2011 00:00:00 GMT-0700 (PDT)')
-    item.datetime_value.getTime().must.equal(comparisonDate.getTime())
-  })
+  it("can parse datetype types", () => {
+    const item = typesResult[0];
+    item.datetime_value.must.be.a.date();
+    const comparisonDate = new Date("Tue Apr 19 2011 00:00:00 GMT-0700 (PDT)");
+    item.datetime_value.getTime().must.equal(comparisonDate.getTime());
+  });
 
-  it('can parse subobjects', () => {
-    const item = typesResult[1]
-    item.hash_value.must.be.an.object()
-    item.hash_value.must.have.property('one')
-    item.hash_value.must.have.property('two')
-    item.hash_value.one.must.equal(1000)
-  })
+  it("can parse subobjects", () => {
+    const item = typesResult[1];
+    item.hash_value.must.be.an.object();
+    item.hash_value.must.have.property("one");
+    item.hash_value.must.have.property("two");
+    item.hash_value.one.must.equal(1000);
+  });
 
-  it('can parse sample plan xml', done => {
-    const data = readFixture('plans.xml')
+  it("can parse sample plan xml", done => {
+    const data = readFixture("plans.xml");
     rparser.parseXML(data, (err, result) => {
-      demand(err).not.exist()
-      result.must.be.an.array()
-      result.must.be.an.array()
-      result.length.must.equal(4)
-      done()
-    })
-  })
+      demand(err).not.exist();
+      result.must.be.an.array();
+      result.must.be.an.array();
+      result.length.must.equal(4);
+      done();
+    });
+  });
 
-  it('can parse sample subscription xml', done => {
-    const data = readFixture('subscription.xml')
+  it("can parse sample subscription xml", done => {
+    const data = readFixture("subscription.xml");
     rparser.parseXML(data, (err, result) => {
-      demand(err).not.exist()
-      result.must.be.an.array()
-      result.length.must.equal(1)
-      const subscription = result[0]
-      subscription.must.have.property('uuid')
-      subscription.uuid.must.equal('44f83d7cba354d5b84812419f923ea96')
-      done()
-    })
-  })
+      demand(err).not.exist();
+      result.must.be.an.array();
+      result.length.must.equal(1);
+      const subscription = result[0];
+      subscription.must.have.property("uuid");
+      subscription.uuid.must.equal("44f83d7cba354d5b84812419f923ea96");
+      done();
+    });
+  });
 
-  it('can parse sample transaction xml', done => {
-    const data = readFixture('transactions.xml')
+  it("can parse sample transaction xml", done => {
+    const data = readFixture("transactions.xml");
     rparser.parseXML(data, (err, result) => {
-      demand(err).not.exist()
-      result.must.be.an.array()
-      result.length.must.equal(1)
-      const transaction = result[0]
-      transaction.must.have.property('uuid')
-      transaction.uuid.must.equal('a13acd8fe4294916b79aec87b7ea441f')
-      done()
-    })
-  })
+      demand(err).not.exist();
+      result.must.be.an.array();
+      result.length.must.equal(1);
+      const transaction = result[0];
+      transaction.must.have.property("uuid");
+      transaction.uuid.must.equal("a13acd8fe4294916b79aec87b7ea441f");
+      done();
+    });
+  });
 
-  it('can parse sample credit_card billing info xml', done => {
-    const data = readFixture('billing_info_cc.xml')
+  it("can parse sample credit_card billing info xml", done => {
+    const data = readFixture("billing_info_cc.xml");
     rparser.parseXML(data, (err, result) => {
-      demand(err).not.exist()
-      result.must.not.be.an.array()
-      result.must.have.property('href')
-      result.must.have.property('type')
-      result.type.must.equal('credit_card')
-      result.must.have.property('first_six')
-      result.first_six.must.equal('411111')
-      result.must.have.property('last_four')
-      result.last_four.must.equal('1111')
-      done()
-    })
-  })
+      demand(err).not.exist();
+      result.must.not.be.an.array();
+      result.must.have.property("href");
+      result.must.have.property("type");
+      result.type.must.equal("credit_card");
+      result.must.have.property("first_six");
+      result.first_six.must.equal("411111");
+      result.must.have.property("last_four");
+      result.last_four.must.equal("1111");
+      done();
+    });
+  });
 
-  it('can parse sample paypal billing info xml', done => {
-    const data = readFixture('billing_info_pp.xml')
+  it("can parse sample paypal billing info xml", done => {
+    const data = readFixture("billing_info_pp.xml");
     rparser.parseXML(data, (err, result) => {
-      demand(err).not.exist()
-      result.must.not.be.an.array()
-      result.must.have.property('href')
-      result.must.have.property('type')
-      result.type.must.equal('paypal')
-      result.must.have.property('billing_agreement_id')
-      result.billing_agreement_id.must.equal('B-1234567890')
-      done()
-    })
-  })
+      demand(err).not.exist();
+      result.must.not.be.an.array();
+      result.must.have.property("href");
+      result.must.have.property("type");
+      result.type.must.equal("paypal");
+      result.must.have.property("billing_agreement_id");
+      result.billing_agreement_id.must.equal("B-1234567890");
+      done();
+    });
+  });
 
-  it('can parse sample coupon xml with one plan_code', done => {
-    const data = readFixture('coupon_01.xml')
+  it("can parse sample coupon xml with one plan_code", done => {
+    const data = readFixture("coupon_01.xml");
     rparser.parseXML(data, (err, result) => {
-      demand(err).not.exist()
-      result.must.not.be.an.array()
-      result.must.have.property('href')
-      result.must.have.property('plan_codes')
-      result.plan_codes.must.be.an.array()
-      result.plan_codes.length.must.equal(1)
-      result.plan_codes[0].must.equal('one')
-      done()
-    })
-  })
+      demand(err).not.exist();
+      result.must.not.be.an.array();
+      result.must.have.property("href");
+      result.must.have.property("plan_codes");
+      result.plan_codes.must.be.an.array();
+      result.plan_codes.length.must.equal(1);
+      result.plan_codes[0].must.equal("one");
+      done();
+    });
+  });
 
-  it('can parse sample coupon xml with multiple plan_codes', done => {
-    const data = readFixture('coupon_02.xml')
+  it("can parse sample coupon xml with multiple plan_codes", done => {
+    const data = readFixture("coupon_02.xml");
     rparser.parseXML(data, (err, result) => {
-      demand(err).not.exist()
-      result.must.not.be.an.array()
-      result.must.have.property('href')
-      result.must.have.property('plan_codes')
-      result.plan_codes.must.be.an.array()
-      result.plan_codes.length.must.equal(2)
-      result.plan_codes[0].must.equal('one')
-      result.plan_codes[1].must.equal('two')
-      done()
-    })
-  })
-})
+      demand(err).not.exist();
+      result.must.not.be.an.array();
+      result.must.have.property("href");
+      result.must.have.property("plan_codes");
+      result.plan_codes.must.be.an.array();
+      result.plan_codes.length.must.equal(2);
+      result.plan_codes[0].must.equal("one");
+      result.plan_codes[1].must.equal("two");
+      done();
+    });
+  });
+});
