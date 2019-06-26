@@ -1,17 +1,17 @@
 A node client for [recurly](https://recurly.com)'s v2 api, with support for secure parameter signing for [recurly.js](https://docs.recurly.com/recurlyjs) embedded forms.
 
-[![on npm](http://img.shields.io/npm/v/recurring.svg?style=flat)](https://www.npmjs.org/package/recurring)  [![Tests](http://img.shields.io/travis/ceejbot/recurring.svg?style=flat)](http://travis-ci.org/ceejbot/recurring)  [![Dependencies](http://img.shields.io/david/ceejbot/recurring.svg?style=flat)](https://david-dm.org/ceejbot/recurring)  ![io.js supported](https://img.shields.io/badge/io.js-supported-green.svg?style=flat)  
+[![on npm](http://img.shields.io/npm/v/recurring.svg?style=flat)](https://www.npmjs.org/package/recurring) [![Tests](http://img.shields.io/travis/ceejbot/recurring.svg?style=flat)](http://travis-ci.org/ceejbot/recurring) [![Dependencies](http://img.shields.io/david/ceejbot/recurring.svg?style=flat)](https://david-dm.org/ceejbot/recurring) ![io.js supported](https://img.shields.io/badge/io.js-supported-green.svg?style=flat)
 
-__This code is still in development.__ We do not have complete coverage of the API yet.
+**This code is still in development.** We do not have complete coverage of the API yet.
 
 The recurly API has a number of different versions. In order to provide clarity as to which version of the recurly API this package supports, we aim to keep our release versions in sync with the recurly versioning scheme.
 
 The following versions of the recurring package are currently supported:
 
-| Recurly API version  | NPM dist-tag          | Git development branch
-| -------------------- | --------------------- | -----------------------
-| 2.7                  | recurly-v2.7 (latest) | 2.7 (master)
-| 2.3                  | recurly-v2.3          | 2.3
+| Recurly API version | NPM dist-tag          | Git development branch |
+| ------------------- | --------------------- | ---------------------- |
+| 2.7                 | recurly-v2.7 (latest) | 2.7 (master)           |
+| 2.3                 | recurly-v2.3          | 2.3                    |
 
 # Recurly API
 
@@ -52,9 +52,9 @@ In order to access the Recurly API you must supply your API key which can be set
 method.
 
 ```javascript
-var Recurring = require('recurring');
+var Recurring = require("recurring");
 var recurly = new Recurring();
-recurly.setAPIKey('your-api-key');
+recurly.setAPIKey("your-api-key");
 ```
 
 **recurly.setRateLimit()**  
@@ -64,7 +64,7 @@ In order to help ensure that you do not exceed these limits Recurring provides a
 The rate limiter can be configured by calling the `setRateLimit()` method.
 
 ```javascript
-var Recurring = require('recurring');
+var Recurring = require("recurring");
 var recurly = new Recurring();
 recurly.setRateLimit(400);
 ```
@@ -75,7 +75,7 @@ Basic in memory result caching can be enabled by calling the `setCache()` method
 the same data does not result in additional API calls to Recurly.
 
 ```javascript
-var Recurring = require('recurring');
+var Recurring = require("recurring");
 var recurly = new Recurring();
 recurly.setCache(true);
 ```
@@ -85,7 +85,7 @@ recurly.setCache(true);
 The recurly result cache can be cleared by calling the `clearCache()` method.
 
 ```javascript
-var Recurring = require('recurring');
+var Recurring = require("recurring");
 var recurly = new Recurring();
 recurly.clearCache();
 ```
@@ -145,11 +145,11 @@ iterators.forEachAsync(iterator, function (err, data, next) {
 });
 ```
 
-**plan.fetchAddOns()**  
+**plan.fetchAddons()**  
 Fetch plan addons. Responds with a array of plan addons.
 
 ```javascript
-plan.fetchAddOns(function(err, addons));
+plan.fetchAddons(function(err, addons));
 ```
 
 ## Account
@@ -229,25 +229,25 @@ Add/update billing information for an account.
 
 ```javascript
 binfo = recurly.BillingInfo();
-binfo.account_code = '1234';
+binfo.account_code = "1234";
 var billing_data = {
-  first_name: 'Dummy',
-  last_name: 'User',
-  number: '4111-1111-1111-1111',
+  first_name: "Dummy",
+  last_name: "User",
+  number: "4111-1111-1111-1111",
   month: 1,
   year: 2020,
-  verification_value: '123',
-  address1: '760 Market Street',
-  address2: 'Suite 500',
-  city: 'San Francisco',
-  state: 'CA',
-  country: 'USA',
-  zip: '94102'
+  verification_value: "123",
+  address1: "760 Market Street",
+  address2: "Suite 500",
+  city: "San Francisco",
+  state: "CA",
+  country: "USA",
+  zip: "94102",
 };
 
 binfo.update(billing_data, function(err, binfo) {
   demand(err).not.exist();
-  binfo.last_four.must.equal('1111');
+  binfo.last_four.must.equal("1111");
 });
 ```
 
@@ -258,9 +258,9 @@ You can also update billing information using a recurly.js billing token in plac
 
 ```javascript
 binfo = recurly.BillingInfo();
-binfo.account_code = '1234';
+binfo.account_code = "1234";
 var billing_data = {
-  token_id: 'bunYTdIdjfJJY6Z87j5NtA' // <- recurly.js billing token.
+  token_id: "bunYTdIdjfJJY6Z87j5NtA", // <- recurly.js billing token.
 };
 binfo.update(billing_data);
 ```
@@ -269,16 +269,16 @@ binfo.update(billing_data);
 
 When adding billing information to an account Recurly may ake an authorization attempt against the card which may incur
 charges depending on your payment gateway. In order to prevent Recurly from making this authorization attempt, a
-``skipAuthorization`` paramater can be supplied along with the billing information.
+`skipAuthorization` paramater can be supplied along with the billing information.
 
 ```javascript
 binfo = recurly.BillingInfo();
-binfo.account_code = '1234';
+binfo.account_code = "1234";
 var billing_data = {
-  number: '4111-1111-1111-1111',
+  number: "4111-1111-1111-1111",
   month: 1,
   year: 2020,
-  skipAuthorization: true // <- do not make authorization request.
+  skipAuthorization: true, // <- do not make authorization request.
 };
 binfo.update(billing_data);
 ```
@@ -414,21 +414,20 @@ iterators.forEachAsync(iterator, function (err, data, next) {
 If `options.amount_in_cents` is omitted, the invoice is refunded in full. Responds with any errors; the invoice object is
 updated.
 
-*options can include:*
+_options can include:_
 
- - `amount_in_cents` (default: undefined) - The specific amount to be refunded from the original invoice. If left empty, the remaining
-   refundable amount will be refunded.
+- `amount_in_cents` (default: undefined) - The specific amount to be refunded from the original invoice. If left empty, the remaining
+  refundable amount will be refunded.
 
- - `refund_apply_order` (default: 'credit') - If credit line items exist on the invoice, this parameter specifies which
-   refund method to use first. Most relevant in a partial refunds, you can chose to refund credit back to the account
-   first or a transaction giving money back to the customer first. Set as 'credit' or 'transaction'.
+- `refund_apply_order` (default: 'credit') - If credit line items exist on the invoice, this parameter specifies which
+  refund method to use first. Most relevant in a partial refunds, you can chose to refund credit back to the account
+  first or a transaction giving money back to the customer first. Set as 'credit' or 'transaction'.
 
 **invoice.markSuccessful(function(err))**  
 Mark an Invoice as Paid Successfully.
 
 **invoice.markFailed(function(err))**  
 Mark an Invoice as Failed Collection.
-
 
 ## Errors
 
@@ -464,11 +463,11 @@ This provides the back-end support for signing parameters for forms embedded usi
 each form type.
 
 ```javascript
-var Recurring = require('recurring');
+var Recurring = require("recurring");
 var recurly = new Recurring();
 
-var signer = new recurly.SignedQuery('your-private-api-key');
-signer.set('account', { account_code: 'account-id' });
+var signer = new recurly.SignedQuery("your-private-api-key");
+signer.set("account", { account_code: "account-id" });
 var signedParameters = signer.toString();
 ```
 
@@ -480,15 +479,14 @@ After Recurly handles a form submission, it posts to you a token pointing to the
 results. Use a FormResponseToken object to fetch the results object represented by the token.
 
 ```javascript
-var Recurring = require('recurring');
+var Recurring = require("recurring");
 var recurly = new Recurring();
 
-var recurlyResponse = new recurly.FormResponseToken(token, 'subscription');
+var recurlyResponse = new recurly.FormResponseToken(token, "subscription");
 recurlyResponse.process(function(err, subscription) {
-	if (err)
-		return handleError(err);
+  if (err) return handleError(err);
 
-	// subscription contains the new subscription data;
+  // subscription contains the new subscription data;
 });
 ```
 

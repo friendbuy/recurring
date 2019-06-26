@@ -121,13 +121,13 @@ describe("Plan", () => {
     plan.id = cached[0];
     const data = {
       add_on_code: "test_add_on_1",
-      name: "Test AddOn 1",
+      name: "Test Addon 1",
       unit_amount_in_cents: {
         USD: 100,
       },
     };
 
-    plan.createAddOn(data, (err, newAddon) => {
+    plan.createAddon(data, (err, newAddon) => {
       demand(err).not.exist();
       newAddon.must.be.an.object();
       newAddon.add_on_code.must.equal(data.add_on_code);
@@ -139,7 +139,7 @@ describe("Plan", () => {
   it("can fetch plan addons", done => {
     plan = recurly.Plan();
     plan.id = cached[0];
-    plan.fetchAddOns((err, addons) => {
+    plan.fetchAddons((err, addons) => {
       demand(err).not.exist();
       addons.must.be.an.array();
       addons[0].add_on_code.must.equal("test_add_on_1");
