@@ -241,7 +241,7 @@ var billing_data = {
   address2: "Suite 500",
   city: "San Francisco",
   state: "CA",
-  country: "USA",
+  country: "US",
   zip: "94102",
 };
 
@@ -419,9 +419,9 @@ _options can include:_
 - `amount_in_cents` (default: undefined) - The specific amount to be refunded from the original invoice. If left empty, the remaining
   refundable amount will be refunded.
 
-- `refund_apply_order` (default: 'credit') - If credit line items exist on the invoice, this parameter specifies which
+- `refund_method` (default: 'credit') - If credit line items exist on the invoice, this parameter specifies which
   refund method to use first. Most relevant in a partial refunds, you can chose to refund credit back to the account
-  first or a transaction giving money back to the customer first. Set as 'credit' or 'transaction'.
+  first or a transaction giving money back to the customer first. Set as 'credit_first' or 'transaction_first'.
 
 **invoice.markSuccessful(function(err))**  
 Mark an Invoice as Paid Successfully.

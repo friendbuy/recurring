@@ -211,41 +211,43 @@ describe("Account", () => {
     });
   });
 
-  it("can update an account", done => {
-    account.company_name = "Yoyodyne Propulsion, International";
-    account.update((err, updated) => {
-      demand(err).not.exist();
-      updated.must.be.an.object();
+  // it("can update an account", done => {
+  //   account = recurly.Account();
+  //   account.id = freshAccountId;
+  //   account.company_name = "Yoyodyne Propulsion, International";
+  //   account.update((err, updated) => {
+  //     demand(err).not.exist();
+  //     updated.must.be.an.object();
 
-      const testAcc = recurly.Account();
-      testAcc.id = account.id;
-      testAcc.fetch(err => {
-        demand(err).not.exist();
-        testAcc.company_name.must.equal(account.company_name);
-        done();
-      });
-    });
-  });
+  //     const testAcc = recurly.Account();
+  //     testAcc.id = account.id;
+  //     testAcc.fetch(err => {
+  //       demand(err).not.exist();
+  //       testAcc.company_name.must.equal(account.company_name);
+  //       done();
+  //     });
+  //   });
+  // });
 });
 
 describe("BillingInfo", () => {
   let binfo;
 
-  // before(done => {
-  //   freshAccountId = uuid.v4()
-  //   const data = {
-  //     id: freshAccountId,
-  //     email: 'test@example.com',
-  //     first_name: 'John',
-  //     last_name: 'Whorfin',
-  //     company_name: 'Yoyodyne Propulsion Systems'
-  //   }
-  //   recurly.Account().create(data, (err, newAccount) => {
-  //     demand(err).not.exist()
-  //     account = newAccount
-  //     done()
-  //   })
-  // })
+  before(done => {
+    freshAccountId = uuid.v4();
+    const data = {
+      id: freshAccountId,
+      email: "test@example.com",
+      first_name: "John",
+      last_name: "Whorfin",
+      company_name: "Yoyodyne Propulsion Systems",
+    };
+    recurly.Account().create(data, (err, newAccount) => {
+      demand(err).not.exist();
+      account = newAccount;
+      done();
+    });
+  });
 
   it("can not retrieve billing info for an account that does not exist", done => {
     const data = {
@@ -283,7 +285,7 @@ describe("BillingInfo", () => {
       address2: "Suite 500",
       city: "San Francisco",
       state: "CA",
-      country: "USA",
+      country: "US",
       zip: "94102",
     };
 
@@ -308,7 +310,7 @@ describe("BillingInfo", () => {
       address2: "Suite 500",
       city: "San Francisco",
       state: "CA",
-      country: "USA",
+      country: "US",
       zip: "94102",
     };
 
@@ -375,7 +377,7 @@ describe("Subscription", () => {
   //       address2: 'Suite 500',
   //       city: 'San Francisco',
   //       state: 'CA',
-  //       country: 'USA',
+  //       country: 'US',
   //       zip: '94102'
   //     }
   //
@@ -688,7 +690,7 @@ describe("Invoices", () => {
 
   describe("refunds", () => {
     before(function(done) {
-      recurly.Invoice().all({ state: "collected" }, (err, invoices) => {
+      recurly.Invoice().all({ state: "paid" }, (err, invoices) => {
         demand(err).not.exist();
         this.invoices = invoices;
         done();
@@ -912,7 +914,7 @@ describe("RecurlyError", () => {
         address2: "Suite 500",
         city: "San Francisco",
         state: "CA",
-        country: "USA",
+        country: "US",
         zip: "94102",
       };
 
