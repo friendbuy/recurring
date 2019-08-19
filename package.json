@@ -64,7 +64,7 @@
     "posttest": "npm run lint",
     "coverage": "cat ./coverage/lcov.info | coveralls",
     "test": "node ./node_modules/.bin/isparta cover --report text --report lcov _mocha -- --timeout=120000 test/*.js",
-    "testit": "node ./node_modules/.bin/isparta cover --report text --report lcov _mocha -- --timeout=120000 --grep 'BillingInfo' test/test-02-api.js",
+    "testit": "node ./node_modules/.bin/isparta cover --report text --report lcov _mocha -- --timeout=120000 --grep 'Plan' test/test-02-api.js",
     "test:watch": "npm run test -- -w",
     "outdated": "npm outdated --depth=0"
   },

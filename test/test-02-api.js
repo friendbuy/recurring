@@ -26,10 +26,11 @@ before(() => {
 
 describe("Plan", () => {
   let cached;
+  let createdPlan;
+  const planId = uuid.v4();
 
   // create a plan.
   it("can create a plan", done => {
-    const planId = uuid.v4();
     const data = {
       plan_code: `testplan${planId}`,
       name: `Test Plan ${planId}`,
@@ -43,6 +44,14 @@ describe("Plan", () => {
       newPlan.must.be.an.object();
       newPlan.id.must.equal(data.plan_code);
       newPlan.name.must.equal(data.name);
+      createdPlan = newPlan;
+      done();
+    });
+  });
+
+  it("can disable a plan", done => {
+    createdPlan.destroy(err => {
+      demand(err).not.exist();
       done();
     });
   });
@@ -561,7 +570,6 @@ describe.skip("Coupons", () => {
 
   it("can delete a coupon", done => {
     coupon.destroy(err => {
-      console.log(err);
       demand(err).not.exist();
       done();
     });
